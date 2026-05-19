@@ -122,6 +122,8 @@ See [SPEC.md](SPEC.md) for the full format specification, including directory st
 
 ## Install
 
+`skill-harness` provides a command-line interface named `skill-harness`.
+
 ### Quick install (prebuilt binary)
 
 ```bash
@@ -142,7 +144,43 @@ cd skill-harness
 cargo install --path .
 ```
 
-### Full skill directory install
+## CLI Usage
+
+Run `skill-harness --help` to see the installed command surface:
+
+```text
+Usage: skill-harness <COMMAND>
+
+Commands:
+  install      Install one SKILL.md file
+  install-dir  Install a full skill directory
+  check-dir    Check if an installed skill directory is up to date
+  check        Check if one installed SKILL.md file is up to date
+  uninstall    Uninstall a skill
+  compose      Validate skill composition architecture plans
+  list         List installed skills
+```
+
+Most commands accept:
+
+- `--harness <target>`: `auto`, `claude`, `codex`, `opencode`, `cursor`, or `generic`
+- `--root <path>`: project root to install into or check; defaults to the current directory
+- `--source <path>`: source skill directory for `install-dir` and `check-dir`
+- `--file <path>`: source `SKILL.md` file for `install` and `check`
+
+Harness targets map to these paths:
+
+| Harness | Installed path |
+|---------|----------------|
+| `claude` | `.claude/skills/<name>/SKILL.md` |
+| `codex` | `.codex/skills/<name>/SKILL.md` |
+| `opencode` | `.opencode/skills/<name>/SKILL.md` |
+| `cursor` | `.cursor/rules/<name>.md` |
+| `generic` | `.agent/skills/<name>/SKILL.md` |
+
+`auto` uses environment detection when the crate is built with the default `detect` feature; otherwise it falls back to `generic`.
+
+### Install the bundled compose-skills package
 
 ```bash
 skill-harness install-dir compose-skills --harness claude
@@ -151,15 +189,42 @@ skill-harness install-dir compose-skills --harness opencode
 skill-harness install-dir compose-skills --harness generic
 ```
 
-`skills/compose-skills` is the canonical bundled source for the compose-skills package, so `install-dir compose-skills` and `check-dir compose-skills` use it by default. Other skills must pass `--source <skill-directory>`.
+`skills/compose-skills` is the canonical bundled source for the `compose-skills` package, so `install-dir compose-skills` and `check-dir compose-skills` use it by default.
 
-### Full skill directory check
+### Check the bundled compose-skills package
 
 ```bash
 skill-harness check-dir compose-skills --harness claude
 skill-harness check-dir compose-skills --harness codex
 skill-harness check-dir compose-skills --harness opencode
 skill-harness check-dir compose-skills --harness generic
+```
+
+### Install or check another skill directory
+
+Other skills must pass `--source <skill-directory>`:
+
+```bash
+skill-harness install-dir my-skill --source ./path/to/my-skill --harness codex
+skill-harness check-dir my-skill --source ./path/to/my-skill --harness codex
+```
+
+Use `install-dir` when the skill has companion files such as `SPEC.md`, `runbooks/`, `references/`, `scripts/`, or `assets/`.
+
+### Install or check a single SKILL.md file
+
+```bash
+skill-harness install my-skill --file ./path/to/SKILL.md --harness claude
+skill-harness check my-skill --file ./path/to/SKILL.md --harness claude
+```
+
+Use `install` only when the skill is a single `SKILL.md` file with no companion resources.
+
+### List and uninstall
+
+```bash
+skill-harness list --root .
+skill-harness uninstall my-skill --harness codex --root .
 ```
 
 ### Composition plan validation
