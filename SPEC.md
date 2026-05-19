@@ -1,4 +1,4 @@
-# agent-skills spec
+# skill-harness spec
 
 Format specification for contextually-activated instruction bundles. Skills package rules, runbooks, and examples into self-contained directories with activation metadata.
 
@@ -182,6 +182,27 @@ When auditing skills:
 5. **Valid frontmatter**: If YAML frontmatter is present, it must parse without errors
 6. **Unique names**: No duplicate skill directory names within a project
 
+## Composition Plan Validation
+
+`skill-harness` also owns deterministic validation for skill-composition architecture plans. This keeps reusable skill-system planning installable without a Python runtime.
+
+Run:
+
+```bash
+skill-harness compose validate <plan.md>
+```
+
+The validator requires these markdown sections:
+
+- `Decision Boundary`
+- `Proposed Skills`
+- `Resource Inventory`
+- `Invocation Policy`
+- `Validation Plan`
+- `Recommendation`
+
+The plan must include at least one markdown list item or heading containing a hyphen-case candidate skill entry, such as `name: compose-skills`.
+
 ## Relationship to Other Specs
 
 | Spec | Role in Skills |
@@ -224,5 +245,5 @@ Planned evaluations that verify the agentic contracts above. Each eval is a scen
 | Eval | Contract | Description |
 |------|----------|-------------|
 | [install_idempotent](evals/install_idempotent.md) | Install | Installing a skill twice produces the same result -- no duplicates, no errors, identical output |
-| [environment_path_resolution](evals/environment_path_resolution.md) | Install | Each target environment resolves to its correct native path |
+| [environment_path_resolution](evals/environment_path_resolution.md) | Install | Each target environment resolves to its correct native path, including Claude Code and Codex skill directories |
 | [uninstall_cleanup](evals/uninstall_cleanup.md) | Uninstall | Uninstall removes the skill file and empty parent directories only |

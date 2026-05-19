@@ -6,9 +6,11 @@ Manage AI agent skills — install, check, uninstall, and list skills across env
 
 ```
 skill-harness install <name> --file <SKILL.md>
+skill-harness install-dir <name> --source <skill-directory> --harness <target>
 skill-harness check <name> --file <SKILL.md>
 skill-harness uninstall <name>
 skill-harness list
+skill-harness compose validate <plan.md>
 ```
 
 ## When to use
@@ -31,8 +33,16 @@ skill-harness install email --file .agent/skills/email/SKILL.md
 The target path depends on the detected environment:
 - Claude Code: `.claude/skills/<name>/SKILL.md`
 - OpenCode: `.opencode/skills/<name>/SKILL.md`
+- Codex: `.codex/skills/<name>/SKILL.md` when `--harness codex` is explicit
 - Cursor: `.cursor/rules/<name>.md`
 - Generic: `.agent/skills/<name>/SKILL.md`
+
+Use `install-dir` when the skill has companion files such as `SPEC.md`, `references/`, `runbooks/`, or `assets/`.
+
+```bash
+skill-harness install-dir compose-skills --source skills/compose-skills --harness claude
+skill-harness install-dir compose-skills --source skills/compose-skills --harness codex
+```
 
 ### check
 
@@ -63,6 +73,14 @@ skill-harness list
 ```
 
 Scans `.agent/skills/` and environment-specific skill directories.
+
+### compose validate
+
+Validate a compose-skills architecture plan with the Rust validator.
+
+```bash
+skill-harness compose validate skills/compose-skills/references/example-plan.md
+```
 
 ## Runbooks
 
