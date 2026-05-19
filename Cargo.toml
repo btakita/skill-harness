@@ -1,6 +1,6 @@
 [package]
 name = "skill-harness"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2024"
 description = "Lifecycle management for AI agent skills — install, audit, eval, sync across environments"
 license = "CC0-1.0"
