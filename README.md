@@ -168,6 +168,8 @@ skill-harness check-dir compose-skills --harness generic
 skill-harness compose validate skills/compose-skills/references/example-plan.md
 ```
 
+The validator checks required plan sections, hyphen-case candidate skill entries, one-skill-vs-many decision rationale, and the `skill-creator` handoff boundary when implementation is part of the plan. Bundled fixtures include malformed diagnostics, ambiguous one-vs-many planning, agent-doc decomposition, and an oversized workflow handoff example.
+
 ## License
 
 [CC0 1.0](LICENSE) -- Public domain. Use this convention however you like.

@@ -681,6 +681,59 @@ mod tests {
     }
 
     #[test]
+    fn bundled_compose_skills_install_check_matrix_covers_supported_harnesses() {
+        let source = tempfile::tempdir().unwrap();
+        std::fs::write(source.path().join("SKILL.md"), "# Compose Skills\n").unwrap();
+        std::fs::write(source.path().join("SPEC.md"), "# Compose Skills Spec\n").unwrap();
+        std::fs::create_dir_all(source.path().join("references/fixtures")).unwrap();
+        std::fs::write(
+            source.path().join("references/fixtures/example.md"),
+            "fixture",
+        )
+        .unwrap();
+
+        let cases = [
+            (
+                HarnessTarget::ClaudeCode,
+                PathBuf::from(".claude/skills/compose-skills"),
+            ),
+            (
+                HarnessTarget::Codex,
+                PathBuf::from(".codex/skills/compose-skills"),
+            ),
+            (
+                HarnessTarget::OpenCode,
+                PathBuf::from(".opencode/skills/compose-skills"),
+            ),
+            (
+                HarnessTarget::Generic,
+                PathBuf::from(".agent/skills/compose-skills"),
+            ),
+        ];
+
+        for (target, expected_rel_dir) in cases {
+            let project = tempfile::tempdir().unwrap();
+            let config =
+                SkillConfig::for_harness("compose-skills", "# Compose Skills\n", "1.0.0", target);
+
+            config
+                .install_directory(source.path(), Some(project.path()))
+                .unwrap();
+
+            let target_dir = project.path().join(expected_rel_dir);
+            assert!(target_dir.join("SKILL.md").is_file());
+            assert!(target_dir.join("SPEC.md").is_file());
+            assert!(target_dir.join("references/fixtures/example.md").is_file());
+            assert!(
+                config
+                    .check_directory(source.path(), Some(project.path()))
+                    .unwrap(),
+                "installed directory should check clean for {target:?}"
+            );
+        }
+    }
+
+    #[test]
     fn check_directory_accepts_identical_tree() {
         let source = tempfile::tempdir().unwrap();
         std::fs::write(source.path().join("SKILL.md"), "# Compose Skills\n").unwrap();

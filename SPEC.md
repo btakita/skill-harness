@@ -223,6 +223,8 @@ The validator requires these markdown sections:
 
 The plan must include at least one markdown list item or heading containing a hyphen-case candidate skill entry, such as `name: compose-skills`.
 
+The `Decision Boundary` must explicitly explain the one-skill-vs-many rationale: when to keep one skill and what reuse, safety, validation, or maintenance pressure justifies a split. Plans that mention skill creation or `skill-creator` must also name the handoff boundary where `compose-skills` stops planning and `skill-creator` begins implementation.
+
 ## Relationship to Other Specs
 
 | Spec | Role in Skills |
@@ -268,4 +270,6 @@ Planned evaluations that verify the agentic contracts above. Each eval is a scen
 | [install_idempotent](evals/install_idempotent.md) | Install | Installing a skill twice produces the same result -- no duplicates, no errors, identical output |
 | [environment_path_resolution](evals/environment_path_resolution.md) | Install | Each target environment resolves to its correct native path, including Claude Code and Codex skill directories |
 | [uninstall_cleanup](evals/uninstall_cleanup.md) | Uninstall | Uninstall removes the skill file and empty parent directories only |
+| bundled compose-skills install/check matrix | Install / Check | `install-dir` plus `check-dir` runs across Claude, Codex, OpenCode, and the generic `.agent/skills` layout |
 | compose-skills fixtures | Check / Compose | Bundled fixtures cover malformed plans, ambiguous one-skill-vs-many splits, and an agent-doc workflow decomposition example |
+| oversized workflow handoff fixture | Compose | End-to-end compose-skills example starts from a broad workflow prompt, decomposes it, and documents the `skill-creator` handoff boundary |

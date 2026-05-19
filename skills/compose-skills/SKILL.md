@@ -44,7 +44,7 @@ Return plans with these sections:
 ## Recommendation
 ```
 
-`skill-harness compose validate <plan.md>` checks for those headings and basic skill-entry fields.
+`skill-harness compose validate <plan.md>` checks for those headings, candidate skill entries, explicit one-skill-vs-many rationale, and the `skill-creator` handoff boundary when implementation follows the architecture plan.
 
 ## Candidate Skill Fields
 

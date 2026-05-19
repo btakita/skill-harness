@@ -20,6 +20,8 @@ The skill emits a markdown architecture plan with:
 - validation plan with positive, chained, and negative trigger tests;
 - recommendation to create standalone skills, extend an existing skill, or keep the behavior as ordinary prompt guidance.
 
+If the plan leads to implementation, it must name where `compose-skills` stops and where `skill-creator` begins. `compose-skills` owns architecture and validation strategy; `skill-creator` owns creating or updating specific skill files after approval.
+
 ## Rules
 
 1. Prefer a single skill until splitting buys reuse, safety, clearer validation, or lower maintenance.
@@ -42,4 +44,4 @@ Every composition plan must include:
 
 ## Validation Contract
 
-`skill-harness compose validate <plan.md>` must fail when required sections are absent or when a plan has no candidate skill entries. A candidate skill entry is any markdown list item or heading containing `name:` with a hyphen-case skill name.
+`skill-harness compose validate <plan.md>` must fail when required sections are absent, when a plan has no candidate skill entries, when the decision boundary lacks an explicit one-skill-vs-many rationale, or when skill creation is mentioned without a `skill-creator` handoff boundary. A candidate skill entry is any markdown list item or heading containing `name:` with a hyphen-case skill name.

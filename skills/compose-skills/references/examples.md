@@ -4,6 +4,10 @@
 
 Split a broad content workflow only when the steps are reusable. A `research-topic` skill can own source collection and notes, while `draft-social-post` can own channel-specific writing. Keep them together if the workflow always has one target and no reusable intermediate artifact.
 
+## Oversized Workflow Handoff
+
+For a broad prompt that asks for research, writing, packaging, and validation, produce the architecture first and hand off only the approved file-generation step to `skill-creator`. See `references/fixtures/oversized-workflow-handoff.md` for a complete source prompt, decomposed plan, validation matrix, and handoff boundary.
+
 ## Agent-Doc Workflow
 
 Do not create a single giant skill for all session behavior if routing diagnostics, commit closeout, compact exchange, and repair flows each have distinct risk controls. Keep the hot path short and move rare cases into runbooks.

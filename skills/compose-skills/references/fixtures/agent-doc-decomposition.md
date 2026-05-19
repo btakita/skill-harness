@@ -2,7 +2,7 @@
 
 ## Decision Boundary
 
-Agent-doc has one hot-path session loop, but compact exchange, route diagnostics, and commit repair have different risk controls and validation needs. Split rare, high-detail procedures into runbooks or helper skills while keeping the main session skill concise.
+Agent-doc has one hot-path session loop, so keep the normal response cycle in one skill. Split compact exchange, route diagnostics, and commit repair into runbooks or helper skills because they have different risk controls and validation needs.
 
 ## Proposed Skills
 
@@ -39,4 +39,3 @@ Test a normal agent-doc file invocation, a route diagnostics prompt that must no
 ## Recommendation
 
 Keep agent-doc-session as the primary skill and split rare, safety-sensitive paths into runbooks or helper skills as their validation fixtures mature.
-

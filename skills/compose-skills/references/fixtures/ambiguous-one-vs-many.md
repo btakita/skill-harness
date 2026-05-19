@@ -2,7 +2,7 @@
 
 ## Decision Boundary
 
-The workflow is a documentation cleanup flow with one user-facing goal. Keep it as one skill unless the reference-audit step becomes reusable across unrelated repositories.
+The workflow is a documentation cleanup flow with one user-facing goal. Keep it as one skill unless the reference-audit step becomes reusable across unrelated repositories; split only when that audit step has its own trigger, resources, and validation checks.
 
 ## Proposed Skills
 
@@ -30,4 +30,3 @@ Forward-test one prompt that should stay in documentation-cleanup, one prompt th
 ## Recommendation
 
 Keep one skill for now. Revisit a split if the reference-audit step becomes independently reusable.
-
