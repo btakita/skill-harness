@@ -145,8 +145,21 @@ cargo install --path .
 ### Full skill directory install
 
 ```bash
-skill-harness install-dir compose-skills --source skills/compose-skills --harness claude
-skill-harness install-dir compose-skills --source skills/compose-skills --harness codex
+skill-harness install-dir compose-skills --harness claude
+skill-harness install-dir compose-skills --harness codex
+skill-harness install-dir compose-skills --harness opencode
+skill-harness install-dir compose-skills --harness generic
+```
+
+`skills/compose-skills` is the canonical bundled source for the compose-skills package, so `install-dir compose-skills` and `check-dir compose-skills` use it by default. Other skills must pass `--source <skill-directory>`.
+
+### Full skill directory check
+
+```bash
+skill-harness check-dir compose-skills --harness claude
+skill-harness check-dir compose-skills --harness codex
+skill-harness check-dir compose-skills --harness opencode
+skill-harness check-dir compose-skills --harness generic
 ```
 
 ### Composition plan validation

@@ -176,4 +176,41 @@ Create the standalone planning skill.
             BTreeSet::from(["compose-skills".to_string()])
         );
     }
+
+    #[test]
+    fn fixture_rejects_malformed_plan() {
+        let report = validate_composition_plan(include_str!(
+            "../skills/compose-skills/references/fixtures/malformed-plan.md"
+        ));
+        assert!(!report.is_valid());
+        assert!(report.candidate_names.is_empty());
+        assert!(report.missing_sections.contains(&"Resource Inventory"));
+    }
+
+    #[test]
+    fn fixture_accepts_ambiguous_one_vs_many_split() {
+        let report = validate_composition_plan(include_str!(
+            "../skills/compose-skills/references/fixtures/ambiguous-one-vs-many.md"
+        ));
+        assert!(report.is_valid());
+        assert_eq!(
+            report.candidate_names,
+            BTreeSet::from(["documentation-cleanup".to_string()])
+        );
+    }
+
+    #[test]
+    fn fixture_accepts_agent_doc_workflow_decomposition() {
+        let report = validate_composition_plan(include_str!(
+            "../skills/compose-skills/references/fixtures/agent-doc-decomposition.md"
+        ));
+        assert!(report.is_valid());
+        assert_eq!(
+            report.candidate_names,
+            BTreeSet::from([
+                "agent-doc-route-diagnostics".to_string(),
+                "agent-doc-session".to_string()
+            ])
+        );
+    }
 }

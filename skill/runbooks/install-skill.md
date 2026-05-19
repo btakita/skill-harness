@@ -21,10 +21,22 @@ Procedure for installing an AI agent skill into a project.
    ```bash
    skill-harness install <name> --file <path/to/SKILL.md>
    ```
+   For full skill directories, use:
+   ```bash
+   skill-harness install-dir <name> --source <path/to/skill-directory> --harness <target>
+   ```
+   For the bundled compose-skills package, omit `--source`:
+   ```bash
+   skill-harness install-dir compose-skills --harness codex
+   ```
 
 4. **Verify installation**
    ```bash
    skill-harness check <name> --file <path/to/SKILL.md>
+   ```
+   For full skill directories, use:
+   ```bash
+   skill-harness check-dir <name> --source <path/to/skill-directory> --harness <target>
    ```
    - Should report "Up to date"
 

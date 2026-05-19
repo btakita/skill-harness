@@ -5,11 +5,8 @@ version = 4
 [[package]]
 name = "agent-kit"
 version = "0.4.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aae357d7af46da0ed1e33d685f8851807065fef3b12a0eb822364b0e78c1f551"
 dependencies = [
  "anyhow",
- "glob",
  "once_cell",
  "regex",
 ]
@@ -620,3 +617,7 @@ name = "zmij"
 version = "1.0.21"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b8848ee67ecc8aedbaf3e4122217aff892639231befc6a1b58d29fff4c2cabaa"
+
+[[patch.unused]]
+name = "tmux-router"
+version = "0.3.10"

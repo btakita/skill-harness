@@ -32,9 +32,23 @@ enum Commands {
     InstallDir {
         /// Skill name
         name: String,
-        /// Source skill directory containing SKILL.md
+        /// Source skill directory containing SKILL.md (defaults to bundled compose-skills)
         #[arg(short, long)]
-        source: PathBuf,
+        source: Option<PathBuf>,
+        /// Target harness (auto, claude, codex, opencode, cursor, generic)
+        #[arg(long, default_value = "auto")]
+        harness: String,
+        /// Project root (default: CWD)
+        #[arg(short, long)]
+        root: Option<PathBuf>,
+    },
+    /// Check if an installed skill directory is up to date
+    CheckDir {
+        /// Skill name
+        name: String,
+        /// Source skill directory containing SKILL.md (defaults to bundled compose-skills)
+        #[arg(short, long)]
+        source: Option<PathBuf>,
         /// Target harness (auto, claude, codex, opencode, cursor, generic)
         #[arg(long, default_value = "auto")]
         harness: String,
@@ -100,9 +114,24 @@ fn main() -> Result<()> {
             harness,
             root,
         } => {
+            let source = resolve_skill_source(&name, source)?;
             let content = std::fs::read_to_string(source.join("SKILL.md"))?;
             let config = make_config(&name, &content, &harness)?;
             config.install_directory(&source, root.as_deref())?;
+        }
+        Commands::CheckDir {
+            name,
+            source,
+            harness,
+            root,
+        } => {
+            let source = resolve_skill_source(&name, source)?;
+            let content = std::fs::read_to_string(source.join("SKILL.md"))?;
+            let config = make_config(&name, &content, &harness)?;
+            let ok = config.check_directory(&source, root.as_deref())?;
+            if !ok {
+                std::process::exit(1);
+            }
         }
         Commands::Check {
             name,
@@ -190,11 +219,26 @@ fn make_auto_config(name: &str, content: &str) -> skill_harness::manage::SkillCo
     }
 }
 
+fn resolve_skill_source(name: &str, source: Option<PathBuf>) -> Result<PathBuf> {
+    if let Some(source) = source {
+        return Ok(source);
+    }
+
+    if name == "compose-skills" {
+        return Ok(PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("skills/compose-skills"));
+    }
+
+    Err(anyhow::anyhow!(
+        "--source is required for {name}; only compose-skills has a bundled canonical source"
+    ))
+}
+
 fn list_skills(root: &std::path::Path) {
     let patterns = [
         ".agent/skills/*/SKILL.md",
         ".claude/skills/*/SKILL.md",
         ".codex/skills/*/SKILL.md",
+        ".opencode/skills/*/SKILL.md",
     ];
 
     let mut found = false;

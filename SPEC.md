@@ -154,6 +154,26 @@ To install a skill into a project:
 ln -s ../../.agent/skills/deploy .claude/skills/deploy
 ```
 
+**Codex:**
+```bash
+skill-harness install-dir compose-skills --harness codex
+skill-harness check-dir compose-skills --harness codex
+```
+
+**OpenCode:**
+```bash
+skill-harness install-dir compose-skills --harness opencode
+skill-harness check-dir compose-skills --harness opencode
+```
+
+**Generic portable layout:**
+```bash
+skill-harness install-dir compose-skills --harness generic
+skill-harness check-dir compose-skills --harness generic
+```
+
+For the bundled `compose-skills` package, `src/skill-harness/skills/compose-skills` is the canonical source tree. `install-dir compose-skills` and `check-dir compose-skills` use that tree by default and compare every file recursively, not only `SKILL.md`.
+
 **Cursor (generate .mdc):**
 ```
 ---
@@ -228,6 +248,7 @@ When installing skills, the agent promises to:
 When checking skills, the agent promises to:
 
 - **Compare content exactly (not just version).** Staleness is determined by byte-level content comparison, not version strings or timestamps.
+- **Compare full skill directories when requested.** `check-dir` reports missing, changed, and extra files relative to the canonical source directory.
 - **Report outdated vs missing vs up-to-date accurately.** Each skill gets one of three statuses. The agent never conflates "missing" with "outdated" or reports false positives.
 
 ### Uninstall
@@ -247,3 +268,4 @@ Planned evaluations that verify the agentic contracts above. Each eval is a scen
 | [install_idempotent](evals/install_idempotent.md) | Install | Installing a skill twice produces the same result -- no duplicates, no errors, identical output |
 | [environment_path_resolution](evals/environment_path_resolution.md) | Install | Each target environment resolves to its correct native path, including Claude Code and Codex skill directories |
 | [uninstall_cleanup](evals/uninstall_cleanup.md) | Uninstall | Uninstall removes the skill file and empty parent directories only |
+| compose-skills fixtures | Check / Compose | Bundled fixtures cover malformed plans, ambiguous one-skill-vs-many splits, and an agent-doc workflow decomposition example |
