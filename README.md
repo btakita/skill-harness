@@ -130,6 +130,19 @@ See [SPEC.md](SPEC.md) for the full format specification, including directory st
 curl -fsSL https://raw.githubusercontent.com/btakita/skill-harness/main/install.sh | sh
 ```
 
+The installer downloads the latest GitHub Release asset for Linux, macOS, or Windows
+from `btakita/skill-harness`. Set `VERSION=v0.1.1` to install a specific release or
+`INSTALL_DIR=/path/to/bin` to choose the destination directory.
+
+Release asset names follow the Rust target triple:
+
+- `skill-harness-x86_64-unknown-linux-gnu.tar.gz`
+- `skill-harness-aarch64-unknown-linux-gnu.tar.gz`
+- `skill-harness-x86_64-apple-darwin.tar.gz`
+- `skill-harness-aarch64-apple-darwin.tar.gz`
+- `skill-harness-x86_64-pc-windows-msvc.zip`
+- `skill-harness-aarch64-pc-windows-msvc.zip`
+
 ### Cargo
 
 ```bash
