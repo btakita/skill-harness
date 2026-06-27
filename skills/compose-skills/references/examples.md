@@ -12,6 +12,13 @@ For a broad prompt that asks for research, writing, packaging, and validation, p
 
 Do not create a single giant skill for all session behavior if routing diagnostics, commit closeout, compact exchange, and repair flows each have distinct risk controls. Keep the hot path short and move rare cases into runbooks.
 
+## Dynamic Context
+
+When a proposed AGENTS or SKILL entry names a behavior, pair it with the file or
+command that supplies the details at use time. Examples: `runbooks/commit.md` for
+closeout, `references/schema.md` for domain fields, or `context pack --query ...`
+for generated state.
+
 ## Browser Automation
 
 Separate browser-control setup from site-specific operations when the same automation harness supports multiple sites. Keep site credentials, selectors, and safety policy in the site-specific skill.

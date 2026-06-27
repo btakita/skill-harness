@@ -59,6 +59,16 @@ A skill bundles three content types:
 
 Rules are the always-relevant policy. Runbooks are loaded when performing specific tasks. Examples provide concrete reference material the agent can consult.
 
+## Dynamic Context
+
+Keep `SKILL.md` as the router and put mutable or bulky context in companion
+resources. Each entry in `SKILL.md` should name the file or command that owns the
+detail: `runbooks/deploy.md` for a procedure, `references/schema.md` for stable
+domain facts, `okf/context.md` for concept bundles, `scripts/context_pack.py`,
+or a service command for generated state.
+Use `install-dir` and `check-dir` so those resources stay aligned across harness
+installs; use single-file `install` only for self-contained skills.
+
 ## Activation Modes
 
 Skills can be activated in four ways:
@@ -131,7 +141,7 @@ curl -fsSL https://raw.githubusercontent.com/btakita/skill-harness/main/install.
 ```
 
 The installer downloads the latest GitHub Release asset for Linux, macOS, or Windows
-from `btakita/skill-harness`. Set `VERSION=v0.1.1` to install a specific release or
+from `btakita/skill-harness`. Set `VERSION=v0.1.2` to install a specific release or
 `INSTALL_DIR=/path/to/bin` to choose the destination directory.
 
 Release asset names follow the Rust target triple:
@@ -170,8 +180,9 @@ Commands:
   check-dir    Check if an installed skill directory is up to date
   check        Check if one installed SKILL.md file is up to date
   uninstall    Uninstall a skill
-  compose      Validate skill composition architecture plans
-  list         List installed skills
+compose      Validate skill composition architecture plans
+okf          Validate Open Knowledge Format bundles
+list         List installed skills
 ```
 
 Most commands accept:
@@ -222,7 +233,7 @@ skill-harness install-dir my-skill --source ./path/to/my-skill --harness codex
 skill-harness check-dir my-skill --source ./path/to/my-skill --harness codex
 ```
 
-Use `install-dir` when the skill has companion files such as `SPEC.md`, `runbooks/`, `references/`, `scripts/`, or `assets/`.
+Use `install-dir` when the skill has companion files such as `SPEC.md`, `runbooks/`, `references/`, `scripts/`, `okf/`, or `assets/`.
 
 ### Install or check a single SKILL.md file
 
@@ -247,6 +258,14 @@ skill-harness compose validate skills/compose-skills/references/example-plan.md
 ```
 
 The validator checks required plan sections, hyphen-case candidate skill entries, one-skill-vs-many decision rationale, and the `skill-creator` handoff boundary when implementation is part of the plan. Bundled fixtures include malformed diagnostics, ambiguous one-vs-many planning, agent-doc decomposition, and an oversized workflow handoff example.
+
+### OKF bundle validation
+
+```bash
+skill-harness okf validate ./path/to/okf
+```
+
+Skill directories may include an `okf/` subdirectory for Open Knowledge Format concept bundles. `install-dir` and `check-dir` validate `okf/` automatically, while `okf validate` lets authors check a bundle directly.
 
 ## License
 

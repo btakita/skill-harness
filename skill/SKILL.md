@@ -12,6 +12,7 @@ skill-harness check-dir <name> --source <skill-directory> --harness <target>
 skill-harness uninstall <name>
 skill-harness list
 skill-harness compose validate <plan.md>
+skill-harness okf validate <okf-directory>
 ```
 
 ## When to use
@@ -20,6 +21,14 @@ skill-harness compose validate <plan.md>
 - When checking if a skill is up to date
 - When removing a skill from the project
 - When listing all installed skills
+
+## Dynamic Context
+
+Treat each skill as a router plus resources. Use `install-dir` / `check-dir` for
+skills that include `runbooks/`, `references/`, `scripts/`, `assets/`, `okf/`, or `SPEC.md`;
+use single-file `install` only when `SKILL.md` is genuinely self-contained. For
+dynamic context authoring and service/database guidance, read
+[runbooks/dynamic-context.md](runbooks/dynamic-context.md).
 
 ## Commands
 
@@ -38,7 +47,7 @@ The target path depends on the detected environment:
 - Cursor: `.cursor/rules/<name>.md`
 - Generic: `.agent/skills/<name>/SKILL.md`
 
-Use `install-dir` when the skill has companion files such as `SPEC.md`, `references/`, `runbooks/`, or `assets/`.
+Use `install-dir` when the skill has companion files such as `SPEC.md`, `references/`, `runbooks/`, `okf/`, or `assets/`.
 
 ```bash
 skill-harness install-dir compose-skills --harness claude
@@ -92,6 +101,17 @@ Validate a compose-skills architecture plan with the Rust validator.
 skill-harness compose validate skills/compose-skills/references/example-plan.md
 ```
 
+### okf validate
+
+Validate an Open Knowledge Format bundle directory.
+
+```bash
+skill-harness okf validate ./path/to/okf
+```
+
+`install-dir` and `check-dir` also validate a skill directory's `okf/` subdirectory when present.
+
 ## Runbooks
 
 - `install skill` — [runbooks/install-skill.md](runbooks/install-skill.md)
+- `dynamic context` — [runbooks/dynamic-context.md](runbooks/dynamic-context.md)

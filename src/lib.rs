@@ -5,6 +5,7 @@
 
 pub mod compose;
 pub mod manage;
+pub mod okf;
 
 pub use manage::SkillConfig;
 

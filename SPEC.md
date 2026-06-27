@@ -10,6 +10,9 @@ Format specification for contextually-activated instruction bundles. Skills pack
 ├── runbooks/          # optional: on-demand procedures
 │   ├── deploy.md
 │   └── migrate.md
+├── okf/               # optional: Open Knowledge Format concept bundle
+│   ├── index.md
+│   └── concepts.md
 └── examples/          # optional: reference material
     ├── config.yaml
     └── template.ts
@@ -57,6 +60,11 @@ The markdown body contains the skill's instruction content. It can include:
 - **Rules** -- declarative policy (conventions, constraints, architecture decisions)
 - **Runbook references** -- pointers to procedures in the `runbooks/` directory
 - **Inline guidance** -- any other instruction content relevant to this capability
+- **Resource references** -- pointers to `runbooks/`, `references/`, `scripts/`, `assets/`, `okf/`, or `SPEC.md`
+
+Keep inline guidance to routing, critical invariants, and concise handoff rules.
+Detailed procedures, schemas, examples, generated summaries, and mutable state
+belong in dynamic resources referenced from the body.
 
 ## Activation Modes
 
@@ -197,10 +205,32 @@ When auditing skills:
 
 1. **SKILL.md required**: Every skill directory must contain a `SKILL.md` file
 2. **Description required**: Frontmatter must include a `description` field
-3. **Runbooks exist**: Any runbook referenced in SKILL.md must exist in the `runbooks/` directory
+3. **Resources exist**: Any local resource referenced in SKILL.md under `runbooks/`, `references/`, `scripts/`, `assets/`, `okf/`, or `SPEC.md` must exist in the skill directory
 4. **No machine-local paths**: Same context invariant as other instruction files -- no `~/`, `/home/user/`, or absolute paths that won't resolve on other machines
 5. **Valid frontmatter**: If YAML frontmatter is present, it must parse without errors
-6. **Unique names**: No duplicate skill directory names within a project
+6. **Valid dynamic context metadata**: Optional `dynamic_context` entries must be YAML mappings with string `name` and single-line string `command` fields
+7. **Valid OKF bundles**: If an `okf/` directory exists, it must contain valid Open Knowledge Format Markdown concept files
+8. **Unique names**: No duplicate skill directory names within a project
+
+## OKF Bundles
+
+Skill directories may include an `okf/` subdirectory for durable Open Knowledge Format concept bundles:
+
+```text
+.agent/skills/context-router/
+├── SKILL.md
+└── okf/
+    ├── index.md
+    └── concepts.md
+```
+
+`index.md` is recommended for navigation. Concept files must start with YAML frontmatter and include a non-empty `type` field. Run:
+
+```bash
+skill-harness okf validate .agent/skills/context-router/okf
+```
+
+`install-dir` and `check-dir` validate `okf/` automatically before syncing a skill directory.
 
 ## Composition Plan Validation
 

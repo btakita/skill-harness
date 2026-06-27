@@ -132,6 +132,7 @@ impl SkillConfig {
                 source_dir.display()
             );
         }
+        crate::okf::validate_skill_directory_okf(source_dir)?;
 
         let target_skill = self.skill_path(root);
         let target_dir = target_skill
@@ -183,6 +184,7 @@ impl SkillConfig {
                 source_dir.display()
             );
         }
+        crate::okf::validate_skill_directory_okf(source_dir)?;
 
         let target_skill = self.skill_path(root);
         let target_dir = target_skill

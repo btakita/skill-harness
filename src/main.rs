@@ -86,6 +86,11 @@ enum Commands {
         #[command(subcommand)]
         command: ComposeCommands,
     },
+    /// Validate Open Knowledge Format bundles
+    Okf {
+        #[command(subcommand)]
+        command: OkfCommands,
+    },
     /// List installed skills
     List {
         /// Project root (default: CWD)
@@ -105,6 +110,9 @@ fn main() -> Result<()> {
             root,
         } => {
             let content = std::fs::read_to_string(&file)?;
+            for message in skill_harness::okf::single_file_resource_warnings(&file, &content) {
+                eprintln!("warning: {message}");
+            }
             let config = make_config(&name, &content, &harness)?;
             config.install(root.as_deref())?;
         }
@@ -171,6 +179,27 @@ fn main() -> Result<()> {
                 }
             }
         },
+        Commands::Okf { command } => match command {
+            OkfCommands::Validate { path } => {
+                let report = skill_harness::okf::validate_okf_bundle(&path)?;
+                println!(
+                    "OKF bundle: {} ({} concept file(s), {} warning(s), {} error(s))",
+                    path.display(),
+                    report.concept_count,
+                    report.warnings.len(),
+                    report.errors.len()
+                );
+                for message in report.warning_messages() {
+                    eprintln!("warning: {message}");
+                }
+                if !report.is_valid() {
+                    for message in report.error_messages() {
+                        eprintln!("{message}");
+                    }
+                    std::process::exit(1);
+                }
+            }
+        },
         Commands::List { root } => {
             let root = root.unwrap_or_else(|| PathBuf::from("."));
             list_skills(&root);
@@ -186,6 +215,15 @@ enum ComposeCommands {
     Validate {
         /// Markdown plan path
         plan: PathBuf,
+    },
+}
+
+#[derive(Subcommand)]
+enum OkfCommands {
+    /// Validate an OKF bundle directory
+    Validate {
+        /// OKF bundle root containing Markdown concept files
+        path: PathBuf,
     },
 }
 

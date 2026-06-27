@@ -63,6 +63,10 @@ For each proposed skill, specify:
 
 Prefer deterministic scripts or compiled commands for repeated parsing, validation, generation, API calls, or mechanical transformations. Prefer references for domain rules, schemas, examples, or workflow variants. Prefer assets only for templates or files copied into outputs.
 
+For every proposed AGENTS/SKILL entry, name the dynamic file or command that owns
+its detail. Use `SKILL.md` as a router, then load `runbooks/`, `references/`,
+`scripts/`, or generated context packs only when that branch is active.
+
 If a proposed skill has no reusable resources and no stable trigger, keep it as ordinary prompt guidance or a section in another skill.
 
 ## Invocation Policy

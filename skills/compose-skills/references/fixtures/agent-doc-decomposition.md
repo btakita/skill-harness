@@ -26,7 +26,13 @@ Agent-doc has one hot-path session loop, so keep the normal response cycle in on
 
 ## Resource Inventory
 
-Keep the hot path in SKILL.md. Put route proof language, compact exchange, and repair flows in runbooks because they are detailed and only relevant under specific plan outputs.
+Keep the hot path in SKILL.md. Put route proof language, compact exchange, and
+repair flows in runbooks because they are detailed and only relevant under
+specific plan outputs. Each hot-path entry should name the dynamic source that
+owns detail: harness invocation -> `runbooks/harness-invocation.md`, closeout ->
+`runbooks/commit.md`, response/pending mechanics -> `runbooks/respond.md` and
+`runbooks/pending-ops.md`, generated repo/session context -> preflight/plan/tsift
+context-pack commands.
 
 ## Invocation Policy
 
